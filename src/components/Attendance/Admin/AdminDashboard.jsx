@@ -38,7 +38,7 @@ const AdminDashboard = () => {
                         <div className="card-body text-center">
                             <h5 className="card-title mb-3">Admin Panel</h5>
                             <p className="card-text text-muted">Manage system configurations and monitor user attendance data.</p>
-                            <Link to="/admin/admin-panel" className="btn btn-primary">
+                            <Link to="/attendance/admin/admin-panel" className="btn btn-primary">
                                 Go to Admin Dashboard
                             </Link>
                         </div>
