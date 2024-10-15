@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Webcam from 'react-webcam';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
 
 const UserRegistration = () => {
     const [fullName, setFullName] = useState('');
@@ -10,7 +12,6 @@ const UserRegistration = () => {
     const [organizationId, setOrganizationId] = useState('');
     const [images, setImages] = useState([]); // To store 10 photos
     const [isCaptured, setIsCaptured] = useState(false);
-    const [successMessage, setSuccessMessage] = useState(''); // To show success message
     const [capturing, setCapturing] = useState(false); // To manage the photo capture process
     const navigate = useNavigate();
     const webcamRef = React.useRef(null);
@@ -24,8 +25,8 @@ const UserRegistration = () => {
             const imageSrc = webcamRef.current.getScreenshot();
             capturedImages.push(imageSrc);
 
-            // Delay between each capture (e.g., 0.5 second)
-            await new Promise(resolve => setTimeout(resolve, 500));
+            // Delay between each capture (e.g., 0.1 second)
+            await new Promise(resolve => setTimeout(resolve, 100));
         }
 
         setImages(capturedImages);
@@ -56,15 +57,13 @@ const UserRegistration = () => {
         try {
             const response = await axios.post('http://localhost:5000/api/register_user', data);
             if (response.status === 201) {
-                setSuccessMessage('User registered successfully!');
+                // Show success toast
+                toast.success('User registered successfully!');
                 clearForm(); // Clear form fields
-                setTimeout(()=> {
-                    setSuccessMessage('');
-                }, 2000)
             }
         } catch (error) {
-            console.error('Error registering user:', error.response?.data || error);
-            alert('Error: ' + (error.response?.data.error || 'Unknown error'));
+            // Show error toast
+            toast.error('Error: ' + (error.response?.data.error || 'Unknown error'));
         }
     };
 
@@ -84,15 +83,12 @@ const UserRegistration = () => {
 
     return (
         <div className="max-vh-100">
-            {/* Success message */}
-            {successMessage && (
-                <div className="alert alert-success mt-3 text-center">
-                    {successMessage}
-                </div>
-            )}
+            {/* Toast container */}
+            <ToastContainer />
+
             <div className="container mt-5 d-flex justify-content-between">
                 {/* User Registration Section */}
-                <div className="card shadow-lg p-4" style={{width: '45%'}}>
+                <div className="card shadow-lg p-4" style={{ width: '45%' }}>
                     <h2 className="text-center mb-4">User Registration</h2>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3 text-start">
@@ -146,8 +142,7 @@ const UserRegistration = () => {
                 </div>
 
                 {/* Camera Section */}
-                <div className="card shadow-lg p-4 d-flex justify-content-center align-items-center"
-                     style={{width: '45%'}}>
+                <div className="card shadow-lg p-4 d-flex justify-content-center align-items-center" style={{ width: '45%' }}>
                     <h2 className="text-center mb-4">Capture Photos</h2>
                     <div className="text-center">
                         {!isCaptured ? (
@@ -155,6 +150,7 @@ const UserRegistration = () => {
                                 audio={false}
                                 ref={webcamRef}
                                 screenshotFormat="image/jpeg"
+                                mirrored={true}
                                 className="rounded-circle"
                                 style={{
                                     width: '300px',
