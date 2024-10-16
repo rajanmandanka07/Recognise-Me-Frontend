@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const AdminPanel = () => {
@@ -12,7 +12,8 @@ const AdminPanel = () => {
             try {
                 const response = await axios.get('http://localhost:5000/api/admin/attendance');
                 setAttendanceData(response.data.attendance);
-            } catch (err) {
+                // eslint-disable-next-line no-unused-vars
+            } catch (error) {
                 setError('Failed to fetch attendance data.');
             } finally {
                 setLoading(false);

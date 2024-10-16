@@ -49,13 +49,12 @@ const TakeAttendance = () => {
         }
     };
 
-
     const startAttendanceProcess = () => {
         setIsProcessing(true);
 
         intervalRef.current = setInterval(() => {
             captureAndSubmitAttendance();
-        }, 2000);
+        }, 5000);
     };
 
     const stopAttendanceProcess = () => {
