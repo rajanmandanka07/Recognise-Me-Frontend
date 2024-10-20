@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import {useNavigate} from "react-router-dom";
 
 const AdminPanel = () => {
     const [attendanceData, setAttendanceData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     // Fetch attendance data from the API when the component mounts
     useEffect(() => {
@@ -39,6 +41,10 @@ const AdminPanel = () => {
         return <div className="alert alert-danger text-center mt-4">{error}</div>;
     }
 
+    const handleBackToDashboard = () => {
+        navigate('/attendance/admin/admin-dashboard');
+    };
+
     return (
         <div className="container mt-5 mb-4">
             <div className="card shadow-lg p-4">
@@ -67,7 +73,8 @@ const AdminPanel = () => {
                                         <td>{record.full_name}</td>
                                         <td>{record.date}</td>
                                         <td>
-                                                <span className={`badge ${record.status === 'Present' ? 'bg-success' : 'bg-danger'}`}>
+                                                <span
+                                                    className={`badge ${record.status === 'Present' ? 'bg-success' : 'bg-danger'}`}>
                                                     {record.status}
                                                 </span>
                                         </td>
@@ -82,6 +89,11 @@ const AdminPanel = () => {
                         </table>
                     </div>
                 </div>
+            </div>
+            <div className="d-flex justify-content-center mt-3">
+                <button className="btn btn-secondary" onClick={handleBackToDashboard}>
+                    Back to Admin Dashboard
+                </button>
             </div>
         </div>
     );

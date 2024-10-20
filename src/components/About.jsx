@@ -17,7 +17,7 @@ const About = () => {
                         <img
                             src={logo}
                             alt="Recognise Me Logo"
-                            style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                            style={{ width: '200px', height: '200px', objectFit: 'cover' }}
                         />
                         <h4>Recognise Me</h4>
                         <p className="text-muted">Facial Recognition-Powered Attendance Solution</p>

@@ -54,7 +54,7 @@ const TakeAttendance = () => {
 
         intervalRef.current = setInterval(() => {
             captureAndSubmitAttendance();
-        }, 5000);
+        }, 1500);
     };
 
     const stopAttendanceProcess = () => {
