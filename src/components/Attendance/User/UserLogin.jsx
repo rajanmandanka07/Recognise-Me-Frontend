@@ -18,10 +18,13 @@ const UserLogin = () => {
                 password
             });
 
-            console.log('Login successful:', response.data);
-            const { full_name, user_id, attendance } = response.data;
-            localStorage.setItem('user', JSON.stringify({ full_name, user_id, attendance }));
+            console.log('Login successful:', response.data.user_id);
 
+            // Store user ID in localStorage
+            localStorage.setItem('userID', response.data.user_id);
+            console.log(localStorage.getItem('userID'));
+
+            // Redirect to user dashboard on successful login
             navigate('/attendance/user/user-dashboard');
         } catch (error) {
             if (error.response) {
