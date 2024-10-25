@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUser, FaCheckCircle, FaTimesCircle, FaCalendarAlt } from 'react-icons/fa'; // Import icons
+import { FaUser, FaCheckCircle, FaTimesCircle, FaCalendarAlt } from 'react-icons/fa';
 import axios from 'axios';
 
 const UserDashboard = () => {
@@ -12,16 +12,12 @@ const UserDashboard = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                // Get userId from localStorage
                 const userId = localStorage.getItem('userID');
-
                 if (!userId) {
                     setError('User ID not found in local storage.');
                     setLoading(false);
                     return;
                 }
-
-                // Send userId in the POST request
                 const response = await axios.post('http://localhost:5000/api/user/dashboard', { user_id: userId });
                 setUserData(response.data);
                 // eslint-disable-next-line no-unused-vars
@@ -31,7 +27,6 @@ const UserDashboard = () => {
                 setLoading(false);
             }
         };
-
         fetchUserData();
     }, []);
 
@@ -48,15 +43,11 @@ const UserDashboard = () => {
     };
 
     const { full_name, email, attendance, organization } = userData;
-
-    // Sort attendance records by date in descending order
     const sortedAttendance = attendance ? attendance.sort((a, b) => new Date(b.attendance_date) - new Date(a.attendance_date)) : [];
 
     return (
         <div className="container mt-5">
             <h2 className="text-center mb-4">User Dashboard</h2>
-
-            {/* User Details */}
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <div className="card shadow-lg mb-4">
@@ -77,8 +68,6 @@ const UserDashboard = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Attendance Records */}
             <div className="row justify-content-center">
                 <div className="col-md-8">
                     <div className="card shadow-lg mb-4">
@@ -92,7 +81,12 @@ const UserDashboard = () => {
                                         <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                                             <span>
                                                 <FaCalendarAlt className="me-2 text-info"/>
-                                                <strong>Date:</strong> {record.attendance_date}
+                                                <strong>Date:</strong> {new Date(record.attendance_date).toLocaleDateString("en-US", {
+                                                weekday: "long",
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric"
+                                            })}
                                             </span>
                                             <span>
                                                 {record.status === 'Present' ? (
@@ -112,9 +106,7 @@ const UserDashboard = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Back Button */}
-            <div className="d-flex justify-content-center mt-3">
+            <div className="d-flex justify-content-center m-3">
                 <button className="btn btn-secondary" onClick={handleBackToDashboard}>
                     Back to Attendance
                 </button>
