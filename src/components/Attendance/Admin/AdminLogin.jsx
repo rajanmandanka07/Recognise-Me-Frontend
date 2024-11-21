@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
+import Cookies from 'universal-cookie'
+const cookies = new Cookies();
 
 const AdminLogin = () => {
     const [adminId, setAdminId] = useState('');
@@ -22,6 +24,10 @@ const AdminLogin = () => {
             // If successful, log the response and store data in localStorage
             console.log('Admin Login successful:', response.data);
             localStorage.setItem('admin', JSON.stringify(response.data));
+
+            cookies.set('AdminID', response.data.admin_id);
+
+            console.log("AdminID : ", cookies.get('AdminID'));
 
             // Navigate to the admin dashboard
             navigate('/attendance/admin/admin-dashboard');

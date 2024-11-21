@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
+import Cookies from 'universal-cookie'
+const cookies = new Cookies();
 
 const UserLogin = () => {
     const [email, setEmail] = useState('');
@@ -22,8 +24,12 @@ const UserLogin = () => {
 
             // Store user ID in localStorage
             localStorage.setItem('userID', response.data.user_id);
-            console.log(localStorage.getItem('userID'));
+            // console.log(localStorage.getItem('userID'));
 
+            // Store user ID in cookies (example: cookie expires in 7 days)
+            // document.cookie = `userID=${response.data.user_id}; path=/; max-age=${7 * 24 * 60 * 60}`;
+
+            cookies.set('userID', response.data.user_id);
             // Redirect to user dashboard on successful login
             navigate('/attendance/user/user-dashboard');
         } catch (error) {
@@ -33,6 +39,7 @@ const UserLogin = () => {
                 toast.error('An error occurred. Please try again later.');
             }
         }
+
     };
 
     return (

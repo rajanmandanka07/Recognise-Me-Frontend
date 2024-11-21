@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie'
+const cookies = new Cookies();
 
 const AdminDashboard = () => {
     return (
@@ -63,8 +65,11 @@ const AdminDashboard = () => {
 
             {/* Back button */}
             <div className="mt-4">
-                <Link to="/attendance" className="btn btn-secondary">
-                    Back to Attendance
+                <Link to="/attendance" className="btn btn-danger">
+                    Logout
+                    {
+                        cookies.remove('AdminID')
+                    }
                 </Link>
             </div>
         </div>

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaCheckCircle, FaTimesCircle, FaCalendarAlt } from 'react-icons/fa';
 import axios from 'axios';
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 const UserDashboard = () => {
     const [userData, setUserData] = useState(null);
@@ -20,6 +22,8 @@ const UserDashboard = () => {
                 }
                 const response = await axios.post('http://localhost:5000/api/user/dashboard', { user_id: userId });
                 setUserData(response.data);
+                console.log("UserID : ", cookies.get('userID'));
+
                 // eslint-disable-next-line no-unused-vars
             } catch (error) {
                 setError('Failed to fetch user data.');
@@ -39,6 +43,7 @@ const UserDashboard = () => {
     }
 
     const handleBackToDashboard = () => {
+        cookies.remove('userID');
         navigate('/attendance');
     };
 
@@ -107,8 +112,8 @@ const UserDashboard = () => {
                 </div>
             </div>
             <div className="d-flex justify-content-center m-3">
-                <button className="btn btn-secondary" onClick={handleBackToDashboard}>
-                    Back to Attendance
+                <button className="btn btn-danger" onClick={handleBackToDashboard}>
+                    Logout
                 </button>
             </div>
         </div>

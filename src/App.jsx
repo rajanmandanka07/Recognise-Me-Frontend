@@ -14,6 +14,8 @@ import TakeAttendance from "./components/Attendance/User/TakeAttendance.jsx";
 import AdminPanel from "./components/Attendance/Admin/AdminPanel.jsx";
 import About from "./components/About.jsx";
 import GroupAttendance from "./components/Attendance/User/GroupAttendance.jsx";
+import ProtectedRouteUser from "./Authencation/ProtectedRouteUser.jsx";
+import ProtectedRouteAdmin from "./Authencation/ProtectedRouteAdmin.jsx";
 
 function App() {
     return (
@@ -30,13 +32,13 @@ function App() {
                             <Route path="/about" element={<About />} />
                             <Route path="/attendance" element={<Attendance />} />
                             <Route path="/attendance/user" element={<UserLogin />} /> {/* User Route */}
-                            <Route path="/attendance/user/user-dashboard" element={<UserDashboard />} />
-                            <Route path="/attendance/user/user-ragistration" element={<UserRegistration />} />
-                            <Route path="/attendance/user/take-attendance" element={<TakeAttendance />} />
-                            <Route path="/attendance/user/group-attendance" element={<GroupAttendance />} />
-                            <Route path="/attendance/admin" element={<AdminLogin />} /> {/* Admin Route */}
-                            <Route path="/attendance/admin/admin-dashboard" element={<AdminDashboard />} />
-                            <Route path="/attendance/admin/admin-panel" element={<AdminPanel />} />
+                            <Route path="/attendance/user/user-dashboard" element={ <ProtectedRouteUser element={<UserDashboard />} />} />
+                            <Route path="/attendance/user/user-ragistration" element={ <ProtectedRouteAdmin element={< UserRegistration />} /> } />
+                            <Route path="/attendance/user/take-attendance" element={ <ProtectedRouteAdmin element={<TakeAttendance />} /> } />
+                            <Route path="/attendance/user/group-attendance" element={<ProtectedRouteAdmin element={<GroupAttendance />} /> } />
+                            <Route path="/attendance/admin" element={<AdminLogin />} />
+                            <Route path="/attendance/admin/admin-dashboard" element={ <ProtectedRouteAdmin element={<AdminDashboard />} />} />
+                            <Route path="/attendance/admin/admin-panel" element={<ProtectedRouteAdmin element={<AdminPanel/>} /> } />
                             <Route path="/segregation" element={<Segregation />} />
                         </Routes>
                     </div>
