@@ -13,6 +13,7 @@ import UserRegistration from "./components/Attendance/User/UserRegistration.jsx"
 import TakeAttendance from "./components/Attendance/User/TakeAttendance.jsx";
 import AdminPanel from "./components/Attendance/Admin/AdminPanel.jsx";
 import About from "./components/About.jsx";
+import GroupAttendance from "./components/Attendance/User/GroupAttendance.jsx";
 
 function App() {
     return (
@@ -32,6 +33,7 @@ function App() {
                             <Route path="/attendance/user/user-dashboard" element={<UserDashboard />} />
                             <Route path="/attendance/user/user-ragistration" element={<UserRegistration />} />
                             <Route path="/attendance/user/take-attendance" element={<TakeAttendance />} />
+                            <Route path="/attendance/user/group-attendance" element={<GroupAttendance />} />
                             <Route path="/attendance/admin" element={<AdminLogin />} /> {/* Admin Route */}
                             <Route path="/attendance/admin/admin-dashboard" element={<AdminDashboard />} />
                             <Route path="/attendance/admin/admin-panel" element={<AdminPanel />} />

@@ -32,6 +32,21 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
+                {/* Card for Group Attendance */}
+                <div className="col-md-4 mb-4">
+                    <div className="card shadow-lg border-0">
+                        <div className="card-body text-center">
+                            <h5 className="card-title mb-3">Group Attendance</h5>
+                            <p className="card-text text-muted">
+                                Upload a group to mark attendance for multiple users at once using facial recognition technology.
+                            </p>
+                            <Link to="/attendance/user/group-attendance" className="btn btn-primary">
+                                Group Attendance
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+
                 {/* Card for Admin Panel */}
                 <div className="col-md-4 mb-4">
                     <div className="card shadow-lg border-0">
