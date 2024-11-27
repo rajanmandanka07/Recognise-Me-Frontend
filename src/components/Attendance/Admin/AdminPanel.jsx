@@ -6,17 +6,17 @@ const AdminPanel = () => {
     const [attendanceData, setAttendanceData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [searchQuery, setSearchQuery] = useState(''); // State for search query
-    const [selectedDate, setSelectedDate] = useState(''); // State for selected date
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedDate, setSelectedDate] = useState('');
+    const [currentPage, setCurrentPage] = useState(1); // State for current page
+    const [recordsPerPage] = useState(10); // Number of records per page
     const navigate = useNavigate();
 
-    // Fetch attendance data from the API when the component mounts
     useEffect(() => {
         const fetchAttendanceData = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/api/admin/attendance');
                 setAttendanceData(response.data.attendance);
-                // eslint-disable-next-line no-unused-vars
             } catch (error) {
                 setError('Failed to fetch attendance data.');
             } finally {
@@ -27,7 +27,6 @@ const AdminPanel = () => {
         fetchAttendanceData();
     }, []);
 
-    // If loading, show a loading spinner
     if (loading) {
         return (
             <div className="text-center mt-5">
@@ -38,7 +37,6 @@ const AdminPanel = () => {
         );
     }
 
-    // If there's an error, show the error message
     if (error) {
         return <div className="alert alert-danger text-center mt-4">{error}</div>;
     }
@@ -47,17 +45,25 @@ const AdminPanel = () => {
         navigate('/attendance/admin/admin-dashboard');
     };
 
-    // Filter attendance data based on the search query and selected date
+    // Filter and sort the data
     const filteredAttendanceData = attendanceData
         .filter(record =>
             (record.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 record.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 record.organization_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                record.date.includes(searchQuery) || // Assuming date is in 'YYYY-MM-DD' format
+                record.date.includes(searchQuery) ||
                 record.status.toLowerCase().includes(searchQuery.toLowerCase())) &&
-            (selectedDate ? record.date === selectedDate : true) // Only filter by date if one is selected
+            (selectedDate ? record.date === selectedDate : true)
         )
-        .sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date in descending order
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Pagination logic
+    const indexOfLastRecord = currentPage * recordsPerPage;
+    const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+    const currentRecords = filteredAttendanceData.slice(indexOfFirstRecord, indexOfLastRecord);
+    const totalPages = Math.ceil(filteredAttendanceData.length / recordsPerPage);
+
+    const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className="container mt-5 mb-4">
@@ -70,8 +76,7 @@ const AdminPanel = () => {
                 <div className="card-body">
                     <h5 className="text-center mb-4">Attendance & User Data</h5>
                     <div className="d-flex justify-content-between mb-4">
-                        <div className="me-2" style={{flex: 7}}>
-                            {/* Search Input */}
+                        <div className="me-2" style={{ flex: 7 }}>
                             <input
                                 type="text"
                                 className="form-control"
@@ -80,8 +85,7 @@ const AdminPanel = () => {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
-                        <div style={{flex: 3}}>
-                            {/* Date Selector */}
+                        <div style={{ flex: 3 }}>
                             <input
                                 type="date"
                                 className="form-control"
@@ -91,7 +95,6 @@ const AdminPanel = () => {
                         </div>
                     </div>
 
-                    {/* Display the attendance and user data in a table */}
                     <div className="table-responsive">
                         <table className="table table-hover table-striped table-bordered">
                             <thead className="table-dark">
@@ -104,8 +107,8 @@ const AdminPanel = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {filteredAttendanceData.length > 0 ? (
-                                filteredAttendanceData.map((record, index) => (
+                            {currentRecords.length > 0 ? (
+                                currentRecords.map((record, index) => (
                                     <tr key={index}>
                                         <td>{record.full_name}</td>
                                         <td>{record.email}</td>
@@ -113,7 +116,8 @@ const AdminPanel = () => {
                                         <td>{record.date}</td>
                                         <td>
                                                 <span
-                                                    className={`badge ${record.status === 'Present' ? 'bg-success' : 'bg-danger'}`}>
+                                                    className={`badge ${record.status === 'Present' ? 'bg-success' : 'bg-danger'}`}
+                                                >
                                                     {record.status}
                                                 </span>
                                         </td>
@@ -127,6 +131,25 @@ const AdminPanel = () => {
                             </tbody>
                         </table>
                     </div>
+
+                    {/* Pagination */}
+                    <nav>
+                        <ul className="pagination justify-content-center">
+                            {Array.from({ length: totalPages }, (_, i) => (
+                                <li
+                                    key={i}
+                                    className={`page-item ${i + 1 === currentPage ? 'active' : ''}`}
+                                >
+                                    <button
+                                        className="page-link"
+                                        onClick={() => handlePageChange(i + 1)}
+                                    >
+                                        {i + 1}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
                 </div>
             </div>
             <div className="d-flex justify-content-center mt-3">

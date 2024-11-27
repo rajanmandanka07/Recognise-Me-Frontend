@@ -3,12 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { FaUser, FaCheckCircle, FaTimesCircle, FaCalendarAlt } from 'react-icons/fa';
 import axios from 'axios';
 import Cookies from "universal-cookie";
+
 const cookies = new Cookies();
 
 const UserDashboard = () => {
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1); // Current page state
+    const recordsPerPage = 5; // Records per page
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,8 +27,6 @@ const UserDashboard = () => {
                 const response = await axios.post('http://localhost:5000/api/user/dashboard', { user_id: userId });
                 setUserData(response.data);
                 console.log("UserID : ", cookies.get('userID'));
-
-                // eslint-disable-next-line no-unused-vars
             } catch (error) {
                 setError('Failed to fetch user data.');
             } finally {
@@ -48,7 +50,15 @@ const UserDashboard = () => {
     };
 
     const { full_name, email, attendance, organization } = userData;
-    const sortedAttendance = attendance ? attendance.sort((a, b) => new Date(b.attendance_date) - new Date(a.attendance_date)) : [];
+    const sortedAttendance = attendance
+        ? attendance.sort((a, b) => new Date(b.attendance_date) - new Date(a.attendance_date))
+        : [];
+
+    // Pagination logic
+    const totalRecords = sortedAttendance.length;
+    const totalPages = Math.ceil(totalRecords / recordsPerPage);
+    const startIndex = (currentPage - 1) * recordsPerPage;
+    const currentRecords = sortedAttendance.slice(startIndex, startIndex + recordsPerPage);
 
     return (
         <div className="container mt-5">
@@ -58,7 +68,7 @@ const UserDashboard = () => {
                     <div className="card shadow-lg mb-4">
                         <div className="card-body text-center">
                             <h4 className="card-title text-primary mb-3">
-                                <FaUser className="me-2"/> User Details
+                                <FaUser className="me-2" /> User Details
                             </h4>
                             <p className="lead">
                                 <strong>Full Name:</strong> {full_name}
@@ -78,26 +88,27 @@ const UserDashboard = () => {
                     <div className="card shadow-lg mb-4">
                         <div className="card-body text-center">
                             <h4 className="card-title text-success mb-3">
-                                <FaCalendarAlt className="me-2"/> Attendance Records
+                                <FaCalendarAlt className="me-2" /> Attendance Records
                             </h4>
-                            {sortedAttendance.length > 0 ? (
+                            {currentRecords.length > 0 ? (
                                 <ul className="list-group">
-                                    {sortedAttendance.map((record, index) => (
+                                    {currentRecords.map((record, index) => (
                                         <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                                             <span>
-                                                <FaCalendarAlt className="me-2 text-info"/>
-                                                <strong>Date:</strong> {new Date(record.attendance_date).toLocaleDateString("en-US", {
-                                                weekday: "long",
-                                                year: "numeric",
-                                                month: "long",
-                                                day: "numeric"
-                                            })}
+                                                <FaCalendarAlt className="me-2 text-info" />
+                                                <strong>Date:</strong>{' '}
+                                                {new Date(record.attendance_date).toLocaleDateString("en-US", {
+                                                    weekday: "long",
+                                                    year: "numeric",
+                                                    month: "long",
+                                                    day: "numeric"
+                                                })}
                                             </span>
                                             <span>
                                                 {record.status === 'Present' ? (
-                                                    <FaCheckCircle className="text-success me-2"/>
+                                                    <FaCheckCircle className="text-success me-2" />
                                                 ) : (
-                                                    <FaTimesCircle className="text-danger me-2"/>
+                                                    <FaTimesCircle className="text-danger me-2" />
                                                 )}
                                                 <strong>Status:</strong> {record.status}
                                             </span>
@@ -107,6 +118,25 @@ const UserDashboard = () => {
                             ) : (
                                 <p className="text-muted">No attendance records found.</p>
                             )}
+                            <div className="d-flex justify-content-between align-items-center mt-4">
+                                <button
+                                    className="btn btn-secondary"
+                                    disabled={currentPage === 1}
+                                    onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
+                                >
+                                    Previous
+                                </button>
+                                <span>
+                                    Page {currentPage} of {totalPages}
+                                </span>
+                                <button
+                                    className="btn btn-secondary"
+                                    disabled={currentPage === totalPages}
+                                    onClick={() => setCurrentPage((prevPage) => prevPage + 1)}
+                                >
+                                    Next
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
