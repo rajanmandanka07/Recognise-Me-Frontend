@@ -7,7 +7,7 @@ const Home = () => {
             <h2 className="text-muted mb-5">Select an Option</h2>
             <div className="row justify-content-center">
                 {/* Card for Attendance System */}
-                <div className="col-md-4 mb-4">
+                <div className="">
                     <div className="card shadow-lg border-0">
                         <div className="card-body text-center">
                             <h5 className="card-title mb-3">Attendance System</h5>
@@ -20,17 +20,17 @@ const Home = () => {
                 </div>
 
                 {/* Card for Segregation */}
-                <div className="col-md-4 mb-4">
-                    <div className="card shadow-lg border-0">
-                        <div className="card-body text-center">
-                            <h5 className="card-title mb-3">Segregation</h5>
-                            <p className="card-text text-muted">Leverage facial recognition to perform user-based segregation for personalized tasks.</p>
-                            <Link to="/segregation" className="btn btn-secondary">
-                                Go to Segregation
-                            </Link>
-                        </div>
-                    </div>
-                </div>
+                {/*<div className="col-md-4 mb-4">*/}
+                {/*    <div className="card shadow-lg border-0">*/}
+                {/*        <div className="card-body text-center">*/}
+                {/*            <h5 className="card-title mb-3">Segregation</h5>*/}
+                {/*            <p className="card-text text-muted">Leverage facial recognition to perform user-based segregation for personalized tasks.</p>*/}
+                {/*            <Link to="/segregation" className="btn btn-secondary">*/}
+                {/*                Go to Segregation*/}
+                {/*            </Link>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
         </div>
     );

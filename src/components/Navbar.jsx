@@ -32,11 +32,11 @@ const Navbar = () => {
                                 Attendance
                             </Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/segregation">
-                                Segregation
-                            </Link>
-                        </li>
+                        {/*<li className="nav-item">*/}
+                        {/*    <Link className="nav-link" to="/segregation">*/}
+                        {/*        Segregation*/}
+                        {/*    </Link>*/}
+                        {/*</li>*/}
                         <li className="nav-item">
                             <Link className="nav-link" to="/about">
                                 About

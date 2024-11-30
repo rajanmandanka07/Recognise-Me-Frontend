@@ -41,7 +41,7 @@ const GroupAttendance = () => {
         setAttendance({}); // Reset attendance data
 
         try {
-            const response = await axios.post("http://localhost:5001/api/mark_group_attendance", formData, {
+            const response = await axios.post("http://localhost:5000/api/mark_group_attendance", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

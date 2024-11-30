@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Webcam from 'react-webcam';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import 'react-toastify/dist/ReactToastify.css';
 
 const UserRegistration = () => {
     const [fullName, setFullName] = useState('');
@@ -23,6 +23,7 @@ const UserRegistration = () => {
 
         for (let i = 0; i < 10; i++) {
             const imageSrc = webcamRef.current.getScreenshot();
+            // const imageSrc = temp;
             capturedImages.push(imageSrc);
 
             // Delay between each capture (e.g., 0.1 second)
